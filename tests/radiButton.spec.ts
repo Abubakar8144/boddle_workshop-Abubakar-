@@ -48,12 +48,20 @@ test("radio buttons", async({page})=>{
         return label
    }
 
-   const labelValue1 = await selectRadioButtonDynamically("1")
+//    const labelValue1 = await selectRadioButtonDynamically("1")
 
-   await expect(await page.locator("p.mt-3")).toHaveText(`You have selected `+labelValue1)
+//    await expect(await page.locator("p.mt-3")).toHaveText(`You have selected `+labelValue1)
 
-   const labelValue2 = await selectRadioButtonDynamically("2")
+//    const labelValue2 = await selectRadioButtonDynamically("2")
 
-   await expect(await page.locator("p.mt-3")).toHaveText(`You have selected `+labelValue2)
+//    await expect(await page.locator("p.mt-3")).toHaveText(`You have selected `+labelValue2)
+
+  
+
+  for(let i=1; i<3; i++){
+    const label1 = await selectRadioButtonDynamically(i)
+    await expect(await page.locator('.mt-3')).toHaveText('You have selected '+label1)
+
+  }
    
 })
