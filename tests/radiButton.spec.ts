@@ -26,26 +26,32 @@ test("radio buttons workshop", async({page})=>{
 
 test("radio buttons", async({page})=>{
 
+    //Redirecting to the URL
     await page.goto("/")
 
+    //First Clicking on Elements Card and Then Radio Button Tab
     await page.locator(".card-body").getByText("Elements").click()
     await page.locator(".text").getByText("Radio Button").click()
     
+    //Validating that the URL and text(heading) of the page
     await page.waitForLoadState("domcontentloaded")
     await expect(await page.locator(".text-center")).toBeVisible()
     await expect(page.url()).toContain('https://demoqa.com/radio-button')
 
+    //Function for selecting radio buttons and validating the results
     async function selectRadioButtonDynamically(index) {
+        //Defining an xpath to identify the radio buttons using their indexes
         const locator = `//div[@class="custom-control custom-radio custom-control-inline"][${index}]`
-        const label = await page.locator(`${locator}/label`).innerText()
+        const mainLabel = await page.locator(`${locator}/label`).innerText()
 
+        //Selecting the radio button
         await page.locator(`${locator}/input`).check({force:true})
 
+        //Validating the results
         const isChecked = await page.locator(`${locator}/input`).isChecked()
-
         expect(isChecked).toBeTruthy()
 
-        return label
+        return mainLabel
    }
 
 //    const labelValue1 = await selectRadioButtonDynamically("1")
@@ -57,11 +63,10 @@ test("radio buttons", async({page})=>{
 //    await expect(await page.locator("p.mt-3")).toHaveText(`You have selected `+labelValue2)
 
   
-
+  //Using 'for' loop for iterating the code for index 1 and 2
   for(let i=1; i<3; i++){
-    const label1 = await selectRadioButtonDynamically(i)
-    await expect(await page.locator('.mt-3')).toHaveText('You have selected '+label1)
-
+    const label = await selectRadioButtonDynamically(i)
+    await expect(await page.locator('.mt-3')).toHaveText('You have selected '+label)
   }
    
 })
