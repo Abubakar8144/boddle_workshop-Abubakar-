@@ -73,4 +73,4 @@ test("radio buttons practice", async({page})=>{
 
  })
 
-
+//span[@class='text-success'][1]
