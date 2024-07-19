@@ -1,8 +1,10 @@
 import { test, expect } from '@playwright/test';
-import { RadioButtonClass } from '../fixtures/pages/radioButtonPage';
+import { RadioButtonClass } from '../fixtures/pages/RadioButtonPage';
+import { HomePage } from '../fixtures/pages/HomePage';
 
 
 test.beforeEach("Will run before evrey test", async({page})=>{
+  const homePage = new HomePage(page)
   await page.goto("/")
 
   await page.locator(".card-body").getByText("Elements").click()
