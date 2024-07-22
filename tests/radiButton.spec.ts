@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
-import { RadioButtonClass } from '../fixtures/pages/RadioButtonPage';
 import { HomePage } from '../fixtures/pages/HomePage';
+import { RadioButtonClass } from '../fixtures/pages/radioButtonPage';
 
 
 test.beforeEach("Will run before evrey test", async({page})=>{

@@ -18,7 +18,7 @@ test("hard code input data", async({page})=>{
     // await formsPage.permanentAddress.fill("abc 123")
     // await formsPage.submitBtn.click()
 
-    formsPage.fillFormRegistration(
+    await formsPage.fillFormRegistration(
         "Abubakar",
         "Abubakar@email.com",
         "ABc 123",
@@ -30,7 +30,7 @@ test("hard code input data", async({page})=>{
     // await expect(await formsPage.currentAddressResult).toHaveText("Current Address :ABc 123")
     // await expect(await formsPage.permanentAddressResult).toHaveText("Permananet Address :abc 123")
 
-    formsPage.validateInputedValues(
+    await formsPage.validateInputedValues(
         "Abubakar",
         "Abubakar@email.com",
         "ABc 123",

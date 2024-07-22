@@ -1,6 +1,11 @@
 {
     "name":"Abubakar",
-    "email": "Abubakar@email.com",
+    "email": "boddle@email.com",
     "currentAddress": "ABc 123",
-    "permanentAddress": "abc 123"
+    "permanentAddress": "abc 123",
+    "firstName": "Boddle",
+    "lastName":"Student",
+    "age":"22",
+    "salary":"25000",
+    "department":"Computer Science"
 }

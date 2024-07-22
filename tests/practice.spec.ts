@@ -49,6 +49,7 @@ test("radio buttons practice", async({page})=>{
   async function selectingRadioButton(index){
 
     const locator = `//div[@class="custom-control custom-radio custom-control-inline"][${index}]`
+    
     const label = await page.locator(`${locator}/label`).innerText()
 
     await page.locator(`${locator}/input`).check({force:true})
