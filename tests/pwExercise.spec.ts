@@ -5,8 +5,8 @@ import { faker } from '@faker-js/faker';
 
 const fixturesFileData = require("../fixtures/fixtures.json")
 
-test("including a new register in table using faker", async({page})=>{
-    const homePage=new HomePage(page)
+test("including a new register in table using faker", async ({ page }) => {
+    const homePage = new HomePage(page)
     const webTablesPage = new WebTables(page)
 
     //navigating to web tables page
@@ -18,11 +18,12 @@ test("including a new register in table using faker", async({page})=>{
     const firstName = faker.person.firstName()
     const lastName = faker.person.lastName()
     const email = faker.internet.email()
-    const age = String(faker.number.int({min:18, max:50})) //Here age is passing as a string because the age field excepts the number as a string
-    const salary = faker.finance.amount({min:25000, max: 100000, dec:0}) //dec:0 is used to avoid decimal values such as "67000.38"
-    const department = faker.commerce.department() 
+    const age = String(faker.number.int({ min: 18, max: 50 })) //Here age is passing as a string because the age field excepts the number as a string
+    const salary = faker.finance.amount({ min: 25000, max: 100000, dec: 0 }) //dec:0 is used to avoid decimal values such as "67000.38"
+    const department = faker.commerce.department()
 
-    await webTablesPage.addingNewRegister(
+    await webTablesPage.clickAddButton()
+    await webTablesPage.fillRegisterEntries(
         firstName,
         lastName,
         email,
@@ -42,8 +43,8 @@ test("including a new register in table using faker", async({page})=>{
 
 
 })
-test("including a new register in table using fixtures files", async({page})=>{
-    const homePage=new HomePage(page)
+test("including a new register in table using fixtures files", async ({ page }) => {
+    const homePage = new HomePage(page)
     const webTablesPage = new WebTables(page)
 
     //navigating to web tables page
@@ -52,7 +53,9 @@ test("including a new register in table using fixtures files", async({page})=>{
     //validating the navigation
     await webTablesPage.validateNavigationToWebTablesPage()
 
-    await webTablesPage.addingNewRegister(
+    await webTablesPage.clickAddButton()
+
+    await webTablesPage.fillRegisterEntries(
         fixturesFileData.firstName,
         fixturesFileData.lastName,
         fixturesFileData.email,
@@ -61,6 +64,41 @@ test("including a new register in table using fixtures files", async({page})=>{
         fixturesFileData.department
     )
 
+
+    await webTablesPage.validatingRegisteredEntry(
+        fixturesFileData.firstName,
+        fixturesFileData.lastName,
+        fixturesFileData.email,
+        fixturesFileData.age,
+        fixturesFileData.salary,
+        fixturesFileData.department
+    )
+
+
+})
+
+test("Editing the registerd entry", async ({ page }) => {
+    const homePage = new HomePage(page)
+    const webTablesPage = new WebTables(page)
+
+    //navigating to web tables page
+    await homePage.naviagteToWebTablesPage()
+
+    //validating the navigation
+    await webTablesPage.validateNavigationToWebTablesPage()
+
+    await webTablesPage.editEntry(2)//Passing the entry number for editing that entry, Here '2' means that we are editing 2nd entry
+    await webTablesPage.fillRegisterEntries(
+        fixturesFileData.firstName,
+        fixturesFileData.lastName,
+        fixturesFileData.email,
+        fixturesFileData.age,
+        fixturesFileData.salary,
+        fixturesFileData.department
+    )
+
+    //
+    await webTablesPage.locatorsForRegisterationValidation(2)//Locators for validation of registered entries, Here '2' means that we are validating 2nd row entries
     await webTablesPage.validatingRegisteredEntry(
         fixturesFileData.firstName,
         fixturesFileData.lastName,
