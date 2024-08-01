@@ -27,16 +27,16 @@ export class FormsPage{
         this.permanentAddressResultField=page.locator("p#permanentAddress")
     }
 
-    async fillFormRegistration(name,email,currentAddress,permanentAddress){
-        await this.username.fill(name)
+    async fillFormRegistration(uname,email,currentAddress,permanentAddress){
+        await this.username.fill(uname)
         await this.userEmail.fill(email)
         await this.currentAddressField.fill(currentAddress)
         await this.permanentAddressField.fill(permanentAddress)
         await this.submitBtn.click()
     }
 
-    async validateInputedValues(name, email, currentAddress, permanentAddress){
-        await expect(await this.nameResult).toHaveText(`Name:${name}`)
+    async validateInputedValues(uname, email, currentAddress, permanentAddress){
+        await expect(await this.nameResult).toHaveText(`Name:${uname}`)
         await expect(await this.emailResult).toHaveText(`Email:${email}`)
         await expect(await this.currentAddressResultField).toHaveText(`Current Address :${currentAddress}`)
         await expect(await this.permanentAddressResultField).toHaveText(`Permananet Address :${permanentAddress}`)

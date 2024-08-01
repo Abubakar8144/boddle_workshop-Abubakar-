@@ -1,6 +1,6 @@
 import {test, expect} from '@playwright/test'
 
-import { ClickButtonClass } from '../fixtures/pages/ClickButtonsPage'
+import { ClickButtonClass } from '../pages/ClickButtonsPage'
 
 test.beforeEach("Run before every test", async({page})=>{
     await page.setViewportSize({width: 2560, height:1080})

@@ -13,14 +13,7 @@ export class WebTables extends HomePage{
     readonly salaryField:Locator
     readonly departmentField:Locator
     readonly submitButton:Locator
-    //Removed readonly from below locators as we are writing them during the function call
-    firstNameCheck:Locator
-    lasttNameCheck:Locator
-    emailCheck:Locator
-    ageCheck:Locator
-    salaryCheck:Locator
-    departmentCheck:Locator
-    editButton: Locator
+
     
 
 
@@ -38,8 +31,7 @@ export class WebTables extends HomePage{
         this.salaryField=page.locator("input#salary")
         this.departmentField=page.locator("input#department")
         this.submitButton=page.locator("button#submit")
-        this.locatorsForRegisterationValidation(4) //Here the default value is set to 4 as the new entry is added at 4th row
-        this.editEntry
+        
         
 
     }
@@ -64,28 +56,27 @@ export class WebTables extends HomePage{
 
     }
 
-    async validatingRegisteredEntry(fname,lname,email,age,salary,department){
-        await expect(await this.firstNameCheck).toHaveText(fname)
-        await expect(await this.lasttNameCheck).toHaveText(lname)
-        await expect(await this.emailCheck).toHaveText(email)
-        await expect(await this.ageCheck).toHaveText(age)
-        await expect(await this.salaryCheck).toHaveText(salary)
-        await expect(await this.departmentCheck).toHaveText(department)
+    async validatingRegisteredEntry(fname,lname,email,age,salary,department,index, page:Page){
+        await expect(await page.locator(`//div[@class="rt-tr-group"][${index}]//div[@class="rt-td"][1]`)).toHaveText(fname)
+        await expect(await page.locator(`//div[@class="rt-tr-group"][${index}]//div[@class="rt-td"][2]`)).toHaveText(lname)
+        await expect(await page.locator(`//div[@class="rt-tr-group"][${index}]//div[@class="rt-td"][4]`)).toHaveText(email)
+        await expect(await page.locator(`//div[@class="rt-tr-group"][${index}]//div[@class="rt-td"][3]`)).toHaveText(age)
+        await expect(await page.locator(`//div[@class="rt-tr-group"][${index}]//div[@class="rt-td"][5]`)).toHaveText(salary)
+        await expect(await page.locator(`//div[@class="rt-tr-group"][${index}]//div[@class="rt-td"][6]`)).toHaveText(department)
 
     }
 
-    async editEntry(entry){
-        this.editButton=this.page.locator("span#edit-record-"+entry)
-        await this.editButton.click()
-    }
+    async editEntry(entry,page:Page){
+       await page.locator("span#edit-record-"+entry).click()
+     }
 
     //Function for Locators for the validation of registered entries
-    async locatorsForRegisterationValidation(index){        
-        this.firstNameCheck=this.page.locator(`//div[@class="rt-tr-group"][${index}]//div[@class="rt-td"][1]`)
-        this.lasttNameCheck=this.page.locator(`//div[@class="rt-tr-group"][${index}]//div[@class="rt-td"][2]`)
-        this.ageCheck=this.page.locator(`//div[@class="rt-tr-group"][${index}]//div[@class="rt-td"][3]`)
-        this.emailCheck=this.page.locator(`//div[@class="rt-tr-group"][${index}]//div[@class="rt-td"][4]`)
-        this.salaryCheck=this.page.locator(`//div[@class="rt-tr-group"][${index}]//div[@class="rt-td"][5]`)
-        this.departmentCheck=this.page.locator(`//div[@class="rt-tr-group"][${index}]//div[@class="rt-td"][6]`)
+    async locatorsForRegisterationValidation(index, page:Page){        
+        page.locator(`//div[@class="rt-tr-group"][${index}]//div[@class="rt-td"][1]`)
+        page.locator(`//div[@class="rt-tr-group"][${index}]//div[@class="rt-td"][2]`)
+        page.locator(`//div[@class="rt-tr-group"][${index}]//div[@class="rt-td"][3]`)
+        page.locator(`//div[@class="rt-tr-group"][${index}]//div[@class="rt-td"][4]`)
+        page.locator(`//div[@class="rt-tr-group"][${index}]//div[@class="rt-td"][5]`)
+        page.locator(`//div[@class="rt-tr-group"][${index}]//div[@class="rt-td"][6]`)
     }
 }

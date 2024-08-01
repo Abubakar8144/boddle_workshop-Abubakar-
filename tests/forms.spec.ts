@@ -1,6 +1,6 @@
 import test, { expect } from "@playwright/test";
 import { faker } from '@faker-js/faker';
-import { FormsPage } from "../fixtures/pages/FormPage";
+import { FormsPage } from "../pages/FormPage";
 
 const fixturesData = require("../fixtures/fixtures.json")
 
@@ -47,21 +47,24 @@ test("Input data using Json variable", async({page})=>{
         "permanentAddress": "abc 123"
     }
 
-
+    await page.goto("https://demoqa.com/text-box")
+    
+    await page.waitForLoadState("domcontentloaded")
+   // await formsPage.currentAddressField.waitFor({state:"attached"})
     // await page.goto("https://demoqa.com/text-box")
     // await formsPage.username.fill(data.name)
     // await formsPage.userEmail.fill(data.email)
     // await formsPage.currentAddress.fill(data.currentAddress)
     // await formsPage.permanentAddress.fill(data.permanentAddress)
     // await formsPage.submitBtn.click()
-    formsPage.fillFormRegistration(data.name,data.email, data.currentAddress, data.permanentAddress)
+    await formsPage.fillFormRegistration(data.name,data.email, data.currentAddress, data.permanentAddress)
 
     // await expect(await formsPage.nameResult).toHaveText(`Name:${data.name}`)
     // await expect(await formsPage.emailResult).toHaveText(`Email:${data.email}`)
     // await expect(await formsPage.currentAddressResult).toHaveText(`Current Address :${data.currentAddress}`)
     // await expect(await formsPage.permanentAddressResult).toHaveText(`Permananet Address :${data.permanentAddress}`)
 
-    formsPage.validateInputedValues(data.name,data.email, data.currentAddress, data.permanentAddress)
+    await formsPage.validateInputedValues(data.name,data.email, data.currentAddress, data.permanentAddress)
 
 })
 
@@ -75,14 +78,14 @@ test("Input data using fixtures", async({page})=>{
     // await formsPage.permanentAddress.fill(fixturesData.permanentAddress)
     // await formsPage.submitBtn.click()
 
-    formsPage.fillFormRegistration(fixturesData.name, fixturesData.email, fixturesData.currentAddress,fixturesData.permanentAddress)
+    await formsPage.fillFormRegistration(fixturesData.name, fixturesData.email, fixturesData.currentAddress,fixturesData.permanentAddress)
 
     // await expect(await formsPage.nameResult).toHaveText(`Name:${fixturesData.name}`)
     // await expect(await formsPage.emailResult).toHaveText(`Email:${fixturesData.email}`)
     // await expect(await formsPage.currentAddressResult).toHaveText(`Current Address :${fixturesData.currentAddress}`)
     // await expect(await formsPage.permanentAddressResult).toHaveText(`Permananet Address :${fixturesData.permanentAddress}`)
     
-    formsPage.validateInputedValues(
+    await formsPage.validateInputedValues(
         fixturesData.name, 
         fixturesData.email, 
         fixturesData.currentAddress,
@@ -112,13 +115,13 @@ test("generate random data using faker.json", async({page})=>{
     // await formsPage.permanentAddress.fill(permanentAddress)
     // await formsPage.submitBtn.click()
 
-    formsPage.fillFormRegistration(name,email,currentAddress,permanentAddress)
+    await formsPage.fillFormRegistration(name,email,currentAddress,permanentAddress)
     // await expect(await formsPage.nameResult).toHaveText(`Name:${name}`)
     // await expect(await formsPage.emailResult).toHaveText(`Email:${email}`)
     // await expect(await formsPage.currentAddressResult).toHaveText(`Current Address :${currentAddress}`)
     // await expect(await formsPage.permanentAddressResult).toHaveText(`Permananet Address :${permanentAddress}`)
 
-    formsPage.validateInputedValues(name,
+    await formsPage.validateInputedValues(name,
         email,
         currentAddress,
         permanentAddress
@@ -152,14 +155,14 @@ test("generate random data using faker.json using json object", async({page})=>{
     // await formsPage.permanentAddress.fill(jsonData.permanentAddress)
     // await formsPage.submitBtn.click()
 
-    formsPage.fillFormRegistration(jsonData.name, jsonData.email, jsonData.currentAddress, jsonData.permanentAddress)
+    await formsPage.fillFormRegistration(jsonData.name, jsonData.email, jsonData.currentAddress, jsonData.permanentAddress)
 
     // await expect(await formsPage.nameResult).toHaveText(`Name:${jsonData.name}`)
     // await expect(await formsPage.emailResult).toHaveText(`Email:${jsonData.email}`)
     // await expect(await formsPage.currentAddressResult).toHaveText(`Current Address :${jsonData.currentAddress}`)
     // await expect(await formsPage.permanentAddressResult).toHaveText(`Permananet Address :${jsonData.permanentAddress}`)
 
-    formsPage.validateInputedValues(
+    await formsPage.validateInputedValues(
         jsonData.name, 
         jsonData.email, 
         jsonData.currentAddress, 

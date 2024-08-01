@@ -1,6 +1,6 @@
 import test, { expect } from "@playwright/test";
-import { HomePage } from "../fixtures/pages/HomePage";
-import { WebTables } from "../fixtures/pages/WebTablesPage";
+import { HomePage } from "../pages/HomePage";
+import { WebTables } from "../pages/WebTablesPage";
 import { faker } from '@faker-js/faker';
 
 const fixturesFileData = require("../fixtures/fixtures.json")
@@ -38,7 +38,9 @@ test("including a new register in table using faker", async ({ page }) => {
         email,
         age,
         salary,
-        department
+        department,
+        "4",//Here we have entered 4 because the new entry will be registerd on 4th row
+        page
     )
 
 
@@ -71,7 +73,9 @@ test("including a new register in table using fixtures files", async ({ page }) 
         fixturesFileData.email,
         fixturesFileData.age,
         fixturesFileData.salary,
-        fixturesFileData.department
+        fixturesFileData.department,
+        "4", //Here we have entered 4 because the new entry will be registerd on 4th row
+        page
     )
 
 
@@ -87,7 +91,7 @@ test("Editing the registerd entry", async ({ page }) => {
     //validating the navigation
     await webTablesPage.validateNavigationToWebTablesPage()
 
-    await webTablesPage.editEntry(2)//Passing the entry number for editing that entry, Here '2' means that we are editing 2nd entry
+    await webTablesPage.editEntry(2,page)//Passing the entry number for editing that entry, Here '2' means that we are editing 2nd entry
     await webTablesPage.fillRegisterEntries(
         fixturesFileData.firstName,
         fixturesFileData.lastName,
@@ -98,14 +102,16 @@ test("Editing the registerd entry", async ({ page }) => {
     )
 
     //
-    await webTablesPage.locatorsForRegisterationValidation(2)//Locators for validation of registered entries, Here '2' means that we are validating 2nd row entries
+    await webTablesPage.locatorsForRegisterationValidation(2,page)//Locators for validation of registered entries, Here '2' means that we are validating 2nd row entries
     await webTablesPage.validatingRegisteredEntry(
         fixturesFileData.firstName,
         fixturesFileData.lastName,
         fixturesFileData.email,
         fixturesFileData.age,
         fixturesFileData.salary,
-        fixturesFileData.department
+        fixturesFileData.department,
+        "2",
+        page
     )
 
 
