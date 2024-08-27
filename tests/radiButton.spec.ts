@@ -17,7 +17,7 @@ test.beforeEach("Will run before evrey test", async({page})=>{
 
 test("radio buttons workshop", async({page})=>{
     
-  const radioButtonClass = new RadioButtonClass(page)
+   const radioButtonClass = new RadioButtonClass(page)
     await radioButtonClass.yesRadio.check({force:true})
     await expect(await radioButtonClass.resultLabel).toHaveText("You have selected Yes")
 

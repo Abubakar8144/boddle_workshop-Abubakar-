@@ -7,5 +7,10 @@
     "lastName":"Student",
     "age":"22",
     "salary":"25000",
-    "department":"Computer Science"
+    "department":"Computer Science",
+    "validateToolTipButton": "Button",
+    "validateToolTipTextField": "text field",
+    "validateToolTipContraryText": "Contrary",
+    "validateToolTipNumber": "1.10.32"
+     
 }
