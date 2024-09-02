@@ -9,8 +9,9 @@ test("including a new register in table using faker", async ({ page }) => {
     const homePage = new HomePage(page)
     const webTablesPage = new WebTables(page)
 
+    await page.goto("/")
     //navigating to web tables page
-    await homePage.naviagteToWebTablesPage()
+    await homePage.naviagteToPage("Elements","Web Tables")
 
     //validating the navigation
     await webTablesPage.validateNavigationToWebTablesPage()
@@ -49,8 +50,9 @@ test("including a new register in table using fixtures files", async ({ page }) 
     const homePage = new HomePage(page)
     const webTablesPage = new WebTables(page)
 
+    await page.goto("/")
     //navigating to web tables page
-    await homePage.naviagteToWebTablesPage()
+    await homePage.naviagteToPage("Elements","Web Tables")
 
     //validating the navigation
     await webTablesPage.validateNavigationToWebTablesPage()
@@ -85,8 +87,9 @@ test("Editing the registerd entry", async ({ page }) => {
     const homePage = new HomePage(page)
     const webTablesPage = new WebTables(page)
 
+    await page.goto("/")
     //navigating to web tables page
-    await homePage.naviagteToWebTablesPage()
+    await homePage.naviagteToPage("Elements","Web Tables")
 
     //validating the navigation
     await webTablesPage.validateNavigationToWebTablesPage()

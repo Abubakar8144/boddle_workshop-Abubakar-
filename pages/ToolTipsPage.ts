@@ -21,10 +21,21 @@ export class ToolTipsPage {
 
 
     async hoverAndValidateToolTip(locator:Locator, tooltipText:string, page: Page) {
-
+        await locator.scrollIntoViewIfNeeded()
+        await page.waitForTimeout(1000)
         await locator.hover()
-        await expect(this.toolTip).toHaveText(`You hovered over the `+ tooltipText)
 
+        let isToolTipVisible = await this.toolTip.isVisible()
+        
+        if(isToolTipVisible == true)
+        {
+            await expect(await this.toolTip).toHaveText(`You hovered over the `+ tooltipText)
+        }
+        else
+        {
+            await locator.hover()
+            await expect(await this.toolTip).toHaveText(`You hovered over the `+ tooltipText)
+        }
     }
 
 }

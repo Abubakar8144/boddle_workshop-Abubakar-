@@ -1,28 +1,22 @@
 import test, { expect } from "@playwright/test";
 import { ToolTipsPage } from "../pages/ToolTipsPage";
 import { Fixtures } from "@playwright/test";
+import { HomePage } from "../pages/HomePage";
 const fixturesData = require("../fixtures/fixtures.json")
 
 test.beforeEach(async ({ page }) => {
     //--------------------Navigation---------------------//
 
-    //navigating to 'demoqa.com' using base url
+    const homePage = new HomePage(page)
+
     await page.goto("/")
-
-    //navigating to Widgets
-    await page.locator(".card-body").getByText("Widgets").click();
-
-    //Clicking tool-tips section
-    await page.locator(".text").getByText("Tool tips").click()
-
-    //Validating the url and Tool Tips page
-    await expect(await page.locator(".text-center")).toBeVisible()
-    await expect(page.url()).toContain('https://demoqa.com/tool-tips')
+    await homePage.naviagteToPage("Widgets","Tool Tips")
 
 })
 
 test("Tool Tips Button", async ({ page }) => {
 
+    //page.setViewportSize({width: 2560, height:1080})
     const toolTipsPage = new ToolTipsPage(page)
 
     //hovering over button and validating the action 
@@ -31,6 +25,7 @@ test("Tool Tips Button", async ({ page }) => {
 
 test("Tool Tips Text Field", async ({ page }) => {
 
+    //page.setViewportSize({width: 2560, height:1080})
     const toolTipsPage = new ToolTipsPage(page)
 
     //hovering over text-field and validating the action
@@ -40,6 +35,7 @@ test("Tool Tips Text Field", async ({ page }) => {
 
 test("Tool Tips Contrary Text", async ({ page }) => {
 
+    //page.setViewportSize({width: 2560, height:1080})
     const toolTipsPage = new ToolTipsPage(page)
 
     //hovering over Contrary Text and validating the action
@@ -49,6 +45,7 @@ test("Tool Tips Contrary Text", async ({ page }) => {
 
 test("Tool Tips Number", async ({ page }) => {
 
+   // page.setViewportSize({width: 2560, height:1080})
     const toolTipsPage = new ToolTipsPage(page)
 
     //hovering over Number(1.10.32) and validating the action
