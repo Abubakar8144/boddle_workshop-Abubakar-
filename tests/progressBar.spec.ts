@@ -15,10 +15,8 @@ test("Progress Bar Test", async ({ page }) => {
     await progressBar.startStopButton.click()
     await expect(progressBar.startStopButton).toHaveText("Stop")
 
-    //Setting a timeout so that the progress-bar loads 100% 
-    await page.waitForTimeout(10000);   // 10s timeout
-    const progressValue = await progressBar.progressBarText.getAttribute("aria-valuenow") //storing the progress bar's value 
-    await expect(progressValue).toBe("100") // Validating the Progress Bar's va;ue to be 100%
+    //Validating the progress bar value using 'toHaveAtrribute' function
+    await expect(await progressBar.progressBarText).toHaveAttribute("aria-valuenow", "100", {timeout: 60000 })
 
     //Validating that the stop button is transitioned to Reset button
     await expect(progressBar.resetButton).toHaveText("Reset")
