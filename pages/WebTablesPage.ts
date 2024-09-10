@@ -14,9 +14,6 @@ export class WebTables extends HomePage{
     readonly departmentField:Locator
     readonly submitButton:Locator
 
-    
-
-
 
      constructor(page:Page){
 
@@ -31,8 +28,7 @@ export class WebTables extends HomePage{
         this.salaryField=page.locator("input#salary")
         this.departmentField=page.locator("input#department")
         this.submitButton=page.locator("button#submit")
-        
-        
+             
 
     }
 

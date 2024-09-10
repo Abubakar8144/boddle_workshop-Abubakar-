@@ -1,11 +1,16 @@
 import {test, expect} from '@playwright/test'
 
 import { ClickButtonClass } from '../pages/ClickButtonsPage'
+import { HomePage } from '../pages/HomePage'
 
 test.beforeEach("Run before every test", async({page})=>{
-    await page.setViewportSize({width: 2560, height:1080})
+    const homePage = new HomePage(page)
     
-    await page.goto("https://demoqa.com/buttons")  //Redirecting to the url
+    //Redirecting to the url
+    await page.goto("/")
+    await homePage.naviagteToPage("Elements", "Buttons")
+
+
 })
 
 test('double clicking', async({page})=>{
