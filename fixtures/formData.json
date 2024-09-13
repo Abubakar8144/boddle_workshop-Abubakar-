@@ -1,0 +1,31 @@
+{
+  "picturePath": "path/to/your/picture.jpg",
+  "states": [
+    "NCR",
+    "Uttar Pradesh",
+    "Haryana",
+    "Rajasthan"
+  ],
+  "cities": [
+    {
+      "NCR": [
+        "Delhi",
+        "Gurgaon",
+        "Noida"
+      ],
+      "Uttar Pradesh": [
+        "Agra",
+        "Lucknow",
+        "Merrut"
+      ],
+      "Haryana": [
+        "Karnal",
+        "Panipat"
+      ],
+      "Rajasthan": [
+        "Jaipur",
+        "Jaiselmer"
+      ]
+    }
+  ]
+}
