@@ -12,65 +12,64 @@ test("practice form exercise", async ({ page }) => {
     const firstName = faker.person.firstName()
     const lastName = faker.person.lastName()
     const email = faker.internet.email()
-    const mobileNumber = faker.phone.number()
+    const mobileNumber = faker.string.numeric(10)
     const currentAddress = faker.location.streetAddress()
+    
+    // Generate a random past date using Faker
+    //const randomDate = faker.date.past({years:30}); // 30 years in the past
+
+    // Extract day, month, and year from the random date
+    const dayOfBirth = faker.number.int({ min: 1, max: 31 }).toString().padStart(2, '0'); // Format day as '01'
+    const monthOfBirth =faker.date.month()
+    const yearOfBirth = faker.number.int({ min: 1950, max: 2024 }).toString()
+    // const monthOfBirth = randomDate.toLocaleString('default', { month: 'long' }); // Format month as 'March'
+    // const yearOfBirth = randomDate.getFullYear().toString(); // Get the year as '1990'
+    console.log(dayOfBirth)
+    console.log(monthOfBirth)
+    console.log(yearOfBirth)
+
+    //Randomly generating indexes for states and city from json file
+    const stateRandomIndex = Math.floor(Math.random() * formData.states.length)
+    const stateName = formData.states[stateRandomIndex]
+    const citiesForSelectedState = formData.cities[0][stateName];
+    const cityRandomIndex = Math.floor(Math.random() * citiesForSelectedState.length)
 
 
+    const subjects = ['Maths', 'Physics', 'Chemistry']
+
+    //Navigating to Practice-Form Page
     await page.goto('/')
     await homePage.naviagteToPage("Forms", "Practice Form")
 
-    //filling form fields
-    await formPage.fillFormFields(firstName,lastName,email,mobileNumber,currentAddress)
+    //Filling and validating the form fields
+    await formPage.fillAndvalidateFormField(formPage.firstNameInput,firstName)
+    await formPage.fillAndvalidateFormField(formPage.lastNameInput,lastName)
+    await formPage.fillAndvalidateFormField(formPage.emailInput,email)
+    await formPage.fillAndvalidateFormField(formPage.mobileNumberInput,mobileNumber)
 
-    //await page.locator("#gender-radio-1").scrollIntoViewIfNeeded({timeout:5000})
+    //Selecting gender
     await formPage.selectAndValidateGenderRadioButton("Male")
 
+    //Selecting Hobbies
     await formPage.selectAndValidateHobbyCheckbox(1)
     await formPage.selectAndValidateHobbyCheckbox(2)
-    
 
+    //Selecting Date Of Birth from the calendar picker
+    await formPage.selectDateOfBirth(dayOfBirth, monthOfBirth, yearOfBirth)
 
-    await formPage.selectStateAndCity()
+    //Selecting a Random State and one of its relative city from json file
+    await formPage.selectStateAndCity(formData.states[stateRandomIndex], formData.cities[0][stateName][cityRandomIndex])
 
-    // test.describe("Automation Practice Form", () => {
-    //     test("should fill and validate the practice form", async ({ page }) => {
-    //         const formPage = new PracticeFormPage(page);
+    //Filling and Validating the current address field
+    await formPage.fillAndvalidateFormField(formPage.addressInput,currentAddress)
 
-    //         // Navigate to the practice form
-    //         await page.goto("https://demoqa.com/automation-practice-form");
+    //Adding subjects
+    await formPage.addSubjects(subjects)
 
-    //         // Fill the form fields using data from the fixture
-    //         await formPage.fillFirstName(formData.firstName);
-    //         await formPage.fillLastName(formData.lastName);
-    //         await formPage.fillEmail(formData.email);
-    //         await formPage.selectGender(formData.gender);
-    //         await formPage.fillMobileNumber(formData.mobileNumber);
-    //         await formPage.setDateOfBirth(formData.dateOfBirth); // Set birth date
-    //         await formPage.fillSubject(formData.subject);
-    //         await formPage.selectHobby(formData.hobby);
-    //         //await formPage.uploadPicture(formData.picturePath); // Ensure the correct path
-    //         await formPage.fillAddress(formData.address);
-    //         //await formPage.selectState(formData.state);
-    //         //await formPage.selectCity(formData.city);
+    //Clicking on submit button
+    await formPage.submitButton.click()
 
-    //         // Submit the form
-    //         await formPage.submitForm();
-
-    //         // Validate the form submission using data from the fixture
-    //         await formPage.validateFormSubmission([
-    //             formData.firstName,
-    //             formData.lastName,
-    //             formData.email,
-    //             formData.gender,
-    //             formData.mobileNumber,
-    //             formData.dateOfBirth,
-    //             formData.subject,
-    //             formData.hobby,
-    //             formData.address,
-    //             `${formData.state} ${formData.city}`
-    //         ]);
-    //     });
-    // });
+    //await formPage.selectDateOfBirth(randomDate)
 
 
 })
