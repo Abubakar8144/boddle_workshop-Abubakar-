@@ -33,6 +33,7 @@ test("practice form exercise", async ({ page }) => {
     const stateName = formData.states[stateRandomIndex]
     const citiesForSelectedState = formData.cities[0][stateName];
     const cityRandomIndex = Math.floor(Math.random() * citiesForSelectedState.length)
+    const cityName = formData.cities[0][stateName][cityRandomIndex]
 
 
     const subjects = ['Maths', 'Physics', 'Chemistry']
@@ -51,8 +52,8 @@ test("practice form exercise", async ({ page }) => {
     await formPage.selectAndValidateGenderRadioButton("Male")
 
     //Selecting Hobbies
-    await formPage.selectAndValidateHobbyCheckbox(1)
-    await formPage.selectAndValidateHobbyCheckbox(2)
+    const hobby1 = await formPage.selectAndValidateHobbyCheckbox(1)
+    const hobby2 = await formPage.selectAndValidateHobbyCheckbox(2)
 
     //Selecting Date Of Birth from the calendar picker
     await formPage.selectDateOfBirth(dayOfBirth, monthOfBirth, yearOfBirth)
@@ -69,6 +70,19 @@ test("practice form exercise", async ({ page }) => {
     //Clicking on submit button
     await formPage.submitButton.click()
 
+    //This method needs to be refactored
+    await formPage.validateFormSubmission([
+        firstName +" "+ lastName,
+        email,
+        "Male",
+        mobileNumber,
+        dayOfBirth+" "+monthOfBirth+","+yearOfBirth,
+        subjects[0]+", "+subjects[1]+", "+subjects[2],
+       "Sports, Reading",
+       "",
+        currentAddress,
+        `${stateName} ${cityName}`
+      ]);
     //await formPage.selectDateOfBirth(randomDate)
 
 

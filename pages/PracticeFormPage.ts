@@ -42,21 +42,22 @@ export class PracticeFormPage {
   }
 
 
-  async fillAndvalidateFormField(fieldLocator:Locator,fieldValue:string) {
+  async fillAndvalidateFormField(fieldLocator: Locator, fieldValue: string) {
     await fieldLocator.fill(fieldValue)
     await expect.soft(fieldLocator).toHaveValue(fieldValue)
 
   }
 
 
-  async selectAndValidateGenderRadioButton(gender:string) {
-    await this.genderLocator.scrollIntoViewIfNeeded()
+  async selectAndValidateGenderRadioButton(gender: string) {
+    await this.subjectsInput.scrollIntoViewIfNeeded({ timeout: 3000 })
+    await this.subjectsInput.waitFor({ state: 'visible', timeout: 3000 })
     await this.page.locator(`input[value="${gender}"]`).check({ force: true })
     const isChecked = await this.page.locator(`input[value="${gender}"]`).isChecked()
     await expect(isChecked).toBeTruthy()
   }
 
-  async selectAndValidateHobbyCheckbox(hobby) {
+  async selectAndValidateHobbyCheckbox(hobby: number) {
     await this.page.locator(`input[type="checkbox"][value="${hobby}"]`).check({ force: true })
     const isChecked = await this.page.locator(`input[type="checkbox"][value="${hobby}"]`).isChecked()
     await expect(isChecked).toBeTruthy()
@@ -152,15 +153,15 @@ export class PracticeFormPage {
 
   async addSubjects(subjects: string[]) {
     for (const subject of subjects) {
-        await this.subjectsInput.fill(subject)
-        // Wait for the dropdown and select the subject
-        await this.page.locator(`.subjects-auto-complete__option >> text=${subject}`).click()
+      await this.subjectsInput.fill(subject)
+      // Wait for the dropdown and select the subject
+      await this.page.locator(`.subjects-auto-complete__option >> text=${subject}`).click()
     }
   }
 
 
 
-  async selectStateAndCity(stateIndex, cityIndex) {
+  async selectStateAndCity(stateIndex: string, cityIndex: string) {
     //clicking and selecting state
     await this.stateDropdown.click();
     await this.dropdowns.getByText(stateIndex).click();
@@ -172,10 +173,14 @@ export class PracticeFormPage {
 
 
 
-  // Method to validate form values after submission
   async validateFormSubmission(expectedValues: string[]) {
-    for (const value of expectedValues) {
-      await expect(await this.formValues).toContainText(value);
+    const formValueLocators = this.page.locator('.table-responsive td')
+  
+    for (let i = 0; i < expectedValues.length; i++) {
+      // Use nth(2 * i + 1) to select only the value cells (odd index cells)
+      await expect(formValueLocators.nth(2 * i + 1)).toHaveText(expectedValues[i])
     }
   }
+  
+
 }
