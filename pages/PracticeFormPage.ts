@@ -1,5 +1,5 @@
 import { Page, Locator, expect } from "@playwright/test";
-const formData = require("../fixtures/formData.json")
+
 export class PracticeFormPage {
   readonly page: Page
   readonly firstNameInput: Locator
@@ -32,7 +32,7 @@ export class PracticeFormPage {
     this.subjectsInput = page.locator("#subjectsInput")
     this.stateDropdown = page.locator("#state")
     this.cityDropdown = page.locator("#city")
-    this.uploadPictureInput = page.locator("#uploadPicture")
+    this.uploadPictureInput = page.locator('#uploadPicture')
     this.addressInput = page.locator("#currentAddress")
     this.submitButton = page.locator("#submit")
     this.formValues = page.locator(".table-responsive td")
@@ -48,6 +48,11 @@ export class PracticeFormPage {
 
   }
 
+  generateRandomIndex(object: string[]) {
+    const randomIndex = Math.floor(Math.random() * object.length)
+    const randomObject = object[randomIndex]
+    return randomObject
+  }
 
   async selectAndValidateGenderRadioButton(gender: string) {
     await this.subjectsInput.scrollIntoViewIfNeeded({ timeout: 3000 })
@@ -57,12 +62,11 @@ export class PracticeFormPage {
     await expect(isChecked).toBeTruthy()
   }
 
-  async selectAndValidateHobbyCheckbox(hobby: number) {
-    await this.page.locator(`input[type="checkbox"][value="${hobby}"]`).check({ force: true })
-    const isChecked = await this.page.locator(`input[type="checkbox"][value="${hobby}"]`).isChecked()
+  async selectHobbyCheckbox(hobby: string) {
+    await this.page.locator(`//label[@class="custom-control-label"]`).getByText(hobby).check({ force: true })
+    const isChecked = await this.page.locator(`//label[@class="custom-control-label"]`).getByText(hobby).isChecked()
     await expect(isChecked).toBeTruthy()
   }
-
 
   async selectDateOfBirth(day: string, month: string, year: string) {
     // Convert day and year to numbers for validation purposes
@@ -114,6 +118,7 @@ export class PracticeFormPage {
   }
 
 
+  //   //Another way of picking date
   // async getRandomDate(pastYears: number) {
   //   const currentDate = new Date();
   //   const endYear = currentDate.getFullYear();
@@ -146,7 +151,7 @@ export class PracticeFormPage {
 
 
 
-  async uploadPicture(filePath: string) {
+  async uploadPicture(filePath) {
     await this.uploadPictureInput.setInputFiles(filePath)
   }
 
@@ -155,32 +160,24 @@ export class PracticeFormPage {
     for (const subject of subjects) {
       await this.subjectsInput.fill(subject)
       // Wait for the dropdown and select the subject
-      await this.page.locator(`.subjects-auto-complete__option >> text=${subject}`).click()
+      // await this.page.locator(`.subjects-auto-complete__option >> text=${subject}`).click()
+      await this.page.locator(".subjects-auto-complete__option").getByText(subject).click()
     }
   }
 
 
 
-  async selectStateAndCity(stateIndex: string, cityIndex: string) {
+  async selectStateOrCity(stateOrCityLocator: Locator, stateOrCity: string) {
     //clicking and selecting state
-    await this.stateDropdown.click();
-    await this.dropdowns.getByText(stateIndex).click();
-
-    //clicking and selecting city
-    await this.cityDropdown.click();
-    await this.dropdowns.getByText(cityIndex).click();
+    await stateOrCityLocator.click();
+    await this.dropdowns.getByText(stateOrCity).click()
   }
 
 
-
-  async validateFormSubmission(expectedValues: string[]) {
-    const formValueLocators = this.page.locator('.table-responsive td')
-  
-    for (let i = 0; i < expectedValues.length; i++) {
-      // Use nth(2 * i + 1) to select only the value cells (odd index cells)
-      await expect(formValueLocators.nth(2 * i + 1)).toHaveText(expectedValues[i])
+  async formValidation(expectedValues: string[]) {
+    for (let i = 0; i < 10; i++) {
+      await expect.soft(this.page.locator(`//div[@class="table-responsive"]//tr[${i + 1}]/td[2]`)).toHaveText(expectedValues[i])
     }
   }
-  
 
 }

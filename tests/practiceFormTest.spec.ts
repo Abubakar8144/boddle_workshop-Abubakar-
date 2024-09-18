@@ -6,84 +6,90 @@ import { PracticeFormPage } from "../pages/PracticeFormPage";
 const formData = require("../fixtures/formData.json")
 
 test("practice form exercise", async ({ page }) => {
-    const homePage = new HomePage(page)
-    const formPage = new PracticeFormPage(page);
+  const homePage = new HomePage(page)
+  const formPage = new PracticeFormPage(page)
 
-    const firstName = faker.person.firstName()
-    const lastName = faker.person.lastName()
-    const email = faker.internet.email()
-    const mobileNumber = faker.string.numeric(10)
-    const currentAddress = faker.location.streetAddress()
-    
-    // Generate a random past date using Faker
-    //const randomDate = faker.date.past({years:30}); // 30 years in the past
+  const firstName = faker.person.firstName()
+  const lastName = faker.person.lastName()
+  const fullName = firstName + " " + lastName
+  const email = faker.internet.email()
+  const mobileNumber = faker.string.numeric(10)
+  const currentAddress = faker.location.streetAddress()
 
-    // Extract day, month, and year from the random date
-    const dayOfBirth = faker.number.int({ min: 1, max: 31 }).toString().padStart(2, '0'); // Format day as '01'
-    const monthOfBirth =faker.date.month()
-    const yearOfBirth = faker.number.int({ min: 1950, max: 2024 }).toString()
-    // const monthOfBirth = randomDate.toLocaleString('default', { month: 'long' }); // Format month as 'March'
-    // const yearOfBirth = randomDate.getFullYear().toString(); // Get the year as '1990'
-    console.log(dayOfBirth)
-    console.log(monthOfBirth)
-    console.log(yearOfBirth)
+  // Generate random selections
+  const gender: string = await formPage.generateRandomIndex(formData.genders)
+  const hobby1: string = await formPage.generateRandomIndex(formData.hobbies)
+  const state: string = await formPage.generateRandomIndex(formData.states)
+  const city: string = await formPage.generateRandomIndex(formData.cities[0][state])
 
-    //Randomly generating indexes for states and city from json file
-    const stateRandomIndex = Math.floor(Math.random() * formData.states.length)
-    const stateName = formData.states[stateRandomIndex]
-    const citiesForSelectedState = formData.cities[0][stateName];
-    const cityRandomIndex = Math.floor(Math.random() * citiesForSelectedState.length)
-    const cityName = formData.cities[0][stateName][cityRandomIndex]
+  // Generate date of birth
+  const dayOfBirth: string = faker.number.int({ min: 1, max: 31 }).toString().padStart(2, '0'); // Format day as '01'
+  const monthOfBirth: string = faker.date.month()
+  const yearOfBirth: string = faker.number.int({ min: 1950, max: 2024 }).toString()
+  const dateOfBirth: string = dayOfBirth + " " + monthOfBirth + "," + yearOfBirth
+
+  // Generate subjects
+  const subject1: string = formPage.generateRandomIndex(formData.subjects)
+  let subject2: string = formPage.generateRandomIndex(formData.subjects)
+  // Check if subject2 is the same as subject1 and regenerate until they are different
+  while (subject2 === subject1) {
+    subject2 = formPage.generateRandomIndex(formData.subjects);
+  }
+  const subjects: string[] = [subject1, subject2]
+  const subjectsvalue: string = subject1 + ", " + subject2
+
+  const filePath: string[] = (formData.picturePath).split("/")
 
 
-    const subjects = ['Maths', 'Physics', 'Chemistry']
+  //Navigating to Practice-Form Page
+  await page.goto('/')
+  await homePage.naviagteToPage("Forms", "Practice Form")
 
-    //Navigating to Practice-Form Page
-    await page.goto('/')
-    await homePage.naviagteToPage("Forms", "Practice Form")
+  //Filling and validating the form fields
+  await formPage.fillAndvalidateFormField(formPage.firstNameInput, firstName)
+  await formPage.fillAndvalidateFormField(formPage.lastNameInput, lastName)
+  await formPage.fillAndvalidateFormField(formPage.emailInput, email)
+  await formPage.fillAndvalidateFormField(formPage.mobileNumberInput, mobileNumber)
 
-    //Filling and validating the form fields
-    await formPage.fillAndvalidateFormField(formPage.firstNameInput,firstName)
-    await formPage.fillAndvalidateFormField(formPage.lastNameInput,lastName)
-    await formPage.fillAndvalidateFormField(formPage.emailInput,email)
-    await formPage.fillAndvalidateFormField(formPage.mobileNumberInput,mobileNumber)
+  //Selecting gender
+  await formPage.selectAndValidateGenderRadioButton(gender)
 
-    //Selecting gender
-    await formPage.selectAndValidateGenderRadioButton("Male")
+  //Selecting Hobbies
+  await formPage.selectHobbyCheckbox(hobby1)
 
-    //Selecting Hobbies
-    const hobby1 = await formPage.selectAndValidateHobbyCheckbox(1)
-    const hobby2 = await formPage.selectAndValidateHobbyCheckbox(2)
+  //Selecting Date Of Birth from the calendar picker
+  await formPage.selectDateOfBirth(dayOfBirth, monthOfBirth, yearOfBirth)
 
-    //Selecting Date Of Birth from the calendar picker
-    await formPage.selectDateOfBirth(dayOfBirth, monthOfBirth, yearOfBirth)
+  //Selecting a State and one of its relative city 
+  await formPage.selectStateOrCity(formPage.stateDropdown, state)
+  await formPage.selectStateOrCity(formPage.cityDropdown, city)
 
-    //Selecting a Random State and one of its relative city from json file
-    await formPage.selectStateAndCity(formData.states[stateRandomIndex], formData.cities[0][stateName][cityRandomIndex])
 
-    //Filling and Validating the current address field
-    await formPage.fillAndvalidateFormField(formPage.addressInput,currentAddress)
+  //Filling and Validating the current address field
+  await formPage.fillAndvalidateFormField(formPage.addressInput, currentAddress)
 
-    //Adding subjects
-    await formPage.addSubjects(subjects)
+  //Adding subjects
+  await formPage.addSubjects(subjects)
 
-    //Clicking on submit button
-    await formPage.submitButton.click()
+  //uploading photo
+  await formPage.uploadPicture(formData.picturePath)
 
-    //This method needs to be refactored
-    await formPage.validateFormSubmission([
-        firstName +" "+ lastName,
-        email,
-        "Male",
-        mobileNumber,
-        dayOfBirth+" "+monthOfBirth+","+yearOfBirth,
-        subjects[0]+", "+subjects[1]+", "+subjects[2],
-       "Sports, Reading",
-       "",
-        currentAddress,
-        `${stateName} ${cityName}`
-      ]);
-    //await formPage.selectDateOfBirth(randomDate)
+  //Clicking on submit button
+  await formPage.submitButton.click()
+
+  //Form Validation
+  await formPage.formValidation([
+    fullName,
+    email,
+    gender,
+    mobileNumber,
+    dateOfBirth,
+    subjectsvalue,
+    hobby1,
+    filePath[filePath.length - 1],
+    currentAddress,
+    `${state} ${city}`
+  ]);
 
 
 })

@@ -1,5 +1,31 @@
 {
-  "picturePath": "path/to/your/picture.jpg",
+  "picturePath": "images/Screenshot 2024-09-12 143856.png",
+  "genders": [
+    "Male",
+    "Female",
+    "Other"
+  ],
+  "hobbies": [
+    "Sports",
+    "Reading",
+    "Music"
+  ],
+  "subjects": [
+    "Maths",
+    "Accounting",
+    "Arts",
+    "Social Studies",
+    "Biology",
+    "Physics",
+    "Chemistry",
+    "Computer Science",
+    "Commerce",
+    "Economics",
+    "Civics",
+    "Hindi",
+    "English",
+    "History"
+  ],
   "states": [
     "NCR",
     "Uttar Pradesh",
