@@ -15,7 +15,8 @@ test("drag and drop using dragTo function", async ({ page }) => {
 
     //Validating Drag and Drop through the text inside the Drop box
     await expect(await dragAndDropPage.dropLocator).toHaveText("Dropped!")
-    await expect(dragAndDropPage.dropContainerColor).toBeVisible()
+    await expect(await dragAndDropPage.dropContainerColor).toBeVisible()
+    await expect(await dragAndDropPage.dropLocator).toHaveCSS('background-color','rgb(70, 130, 180)')
 
 })
 
@@ -36,5 +37,6 @@ test("drag and drop manually", async ({ page }) => {
     //Validating Drag and Drop through the text inside the Drop box
     await expect(await dragAndDropPage.dropLocator).toHaveText("Dropped!")
     await expect(dragAndDropPage.dropContainerColor).toBeVisible()
+    await expect(await dragAndDropPage.dropLocator).toHaveCSS('background-color','rgb(70, 130, 180)')
 
 })
